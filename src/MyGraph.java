@@ -61,8 +61,6 @@ public class MyGraph implements Graph {
 			}
 			
 		}
-		System.out.println(eMap);
-		System.out.println(vMap);
 	}
 
 	/**

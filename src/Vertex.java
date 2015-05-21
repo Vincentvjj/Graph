@@ -4,7 +4,9 @@
 public class Vertex {
 	// label attached to this vertex
 	private String label;
-
+//	public boolean known;
+	public int cost;
+	
 	/**
 	 * Construct a new vertex
 	 * 
@@ -15,6 +17,8 @@ public class Vertex {
 		if (label == null)
 			throw new IllegalArgumentException("null");
 		this.label = label;
+//		this.known = false;
+		this.cost = Integer.MAX_VALUE;
 	}
 
 	/**
@@ -25,6 +29,7 @@ public class Vertex {
 	public String getLabel() {
 		return label;
 	}
+
 
 	/**
 	 * A string representation of this object

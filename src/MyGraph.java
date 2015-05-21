@@ -10,8 +10,8 @@ public class MyGraph implements Graph {
 	
 	private Map<Vertex, List<Vertex>> vMap;
 	private Map<Vertex, List<Edge>> eMap;
-	private Collection<Edge> edges;
-	private Collection<Vertex> vertexes;
+	private List<Edge> edges;
+	private List<Vertex> vertexes;
 
 	// YOUR CODE HERE
 
@@ -26,8 +26,8 @@ public class MyGraph implements Graph {
 	 */
 	public MyGraph(Collection<Vertex> v, Collection<Edge> e) {
 		
-		edges = new HashSet<Edge>();
-		vertexes = new HashSet<Vertex>();
+		edges = new ArrayList<Edge>();
+		vertexes = new ArrayList<Vertex>();
 		vMap = new HashMap<Vertex, List<Vertex>>();
 		eMap = new HashMap<Vertex, List<Edge>>();
 		
@@ -59,7 +59,6 @@ public class MyGraph implements Graph {
 				eMap.get(from).add(edges);
 				this.edges.add(edges);
 			}
-			
 		}
 	}
 
@@ -149,27 +148,49 @@ public class MyGraph implements Graph {
 	
 	public Path shortestPath(Vertex a, Vertex b) {
 		List<Vertex> unknown = new LinkedList<Vertex>();
-		List<Vertex> known = new LinkedList<Vertex>();
-	
-		for (Vertex v : vertexes) {
-			unknown.add(v);
+		unknown = vertexes;
+		Vertex source = unknown.get(vertexes.indexOf(a));
+		Vertex chosenVertex = source;
+		source.cost = 0;
+		int min;
+
+		
+		while(!unknown.isEmpty()) {
+			min = Integer.MAX_VALUE;
+			System.out.println(unknown);
+			for(Vertex vs : unknown) {
+				if(vs.cost < min) {
+					min = vs.cost;
+					chosenVertex = vs;
+					vs.known = true;
+				}
+			}
+			System.out.println(chosenVertex);
+			
+			for(Edge e : eMap.get(chosenVertex)) {
+				Vertex curr = unknown.get(unknown.indexOf(e.getDestination()));
+				if(!curr.known) 
+				{
+					int prev = Math.abs(curr.cost + e.getWeight());
+					int newWeight = e.getWeight();
+					if(newWeight < prev) {
+						curr.cost = newWeight;
+						System.out.println(curr.cost);
+						curr.path.vertices.add(chosenVertex);
+					}
+				}
+				
+			}		
+			
+			unknown.remove(chosenVertex);
 		}
-		
-		unknown.get(unknown.indexOf(a)).cost = 0;
-		known.add(a);
-		unknown.remove(a);
-		
 		
 		
 		
 		return null;
-//		while (!unknown.isEmpty()) {
-//			
-//		}
+
 	}
 	
-//	private void dijkstra(Vertex start) {
-//		
-//	}
+
 
 }

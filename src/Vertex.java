@@ -1,11 +1,14 @@
+import java.util.LinkedList;
+
 /**
  * Representation of a graph vertex
  */
 public class Vertex {
 	// label attached to this vertex
 	private String label;
-//	public boolean known;
+	public boolean known;
 	public int cost;
+	public Path path;
 	
 	/**
 	 * Construct a new vertex
@@ -17,8 +20,9 @@ public class Vertex {
 		if (label == null)
 			throw new IllegalArgumentException("null");
 		this.label = label;
-//		this.known = false;
+		this.known = false;
 		this.cost = Integer.MAX_VALUE;
+		this.path = new Path(new LinkedList<Vertex>(), this.cost);
 	}
 
 	/**

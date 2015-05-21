@@ -146,11 +146,30 @@ public class MyGraph implements Graph {
 	 * @throws IllegalArgumentException
 	 *             if a or b does not exist.
 	 */
-//	public Path shortestPath(Vertex a, Vertex b) {
-//
-//		// YOUR CODE HERE (you might comment this out this method while doing
-//		// Part 1)
-//
+	
+	public Path shortestPath(Vertex a, Vertex b) {
+		List<Vertex> unknown = new LinkedList<Vertex>();
+		List<Vertex> known = new LinkedList<Vertex>();
+	
+		for (Vertex v : vertexes) {
+			unknown.add(v);
+		}
+		
+		unknown.get(unknown.indexOf(a)).cost = 0;
+		known.add(a);
+		unknown.remove(a);
+		
+		
+		
+		
+		return null;
+//		while (!unknown.isEmpty()) {
+//			
+//		}
+	}
+	
+//	private void dijkstra(Vertex start) {
+//		
 //	}
 
 }

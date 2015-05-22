@@ -170,18 +170,20 @@ public class MyGraph implements Graph {
 					chosenVertex = vs;
 				}
 			}
-			System.out.println("cost map : " + costMap);
-			System.out.println("edge map : " + eMap);
-			System.out.println(unknown);
-			System.out.println(chosenVertex);
+//			System.out.println("cost map : " + costMap);
+//			System.out.println("edge map : " + eMap);
+//			System.out.println(unknown);
+//			System.out.println(chosenVertex);
 			
 			for(Edge e : eMap.get(chosenVertex)) {
 				if(unknown.contains(e.getDestination())) {
 				
 					Vertex curr = unknown.get(unknown.indexOf(e.getDestination()));
-					
+					System.out.println(costMap.get(curr));
 					int prev = Math.abs(costMap.get(curr) + e.getWeight());
 					int newWeight = e.getWeight();
+					System.out.println(Math.abs(prev));
+					System.out.println(newWeight);
 					if(newWeight < prev) {
 						costMap.put(curr, newWeight);
 						pathMap.get(curr).vertices.clear();
@@ -192,9 +194,22 @@ public class MyGraph implements Graph {
 			}
 			unknown.remove(chosenVertex);
 		}		
+		
+		Path shortPath = new Path(new LinkedList<Vertex>(), costMap.get(b));
+		boolean done = false; 
+		Vertex temp = pathMap.get(b).vertices.get(0);
 
 		
-		return null;
+		while(!done) {
+			shortPath.vertices.add(temp);
+			if(temp.equals(a)) {
+				done = true;
+			} else {	
+				temp = pathMap.get(temp).vertices.get(0);
+			}
+		}
+	
+		return shortPath;
 
 	}
 	

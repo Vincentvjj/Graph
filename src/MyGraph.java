@@ -148,44 +148,51 @@ public class MyGraph implements Graph {
 	
 	public Path shortestPath(Vertex a, Vertex b) {
 		List<Vertex> unknown = new LinkedList<Vertex>();
-		unknown = vertexes;
+		Map<Vertex, Integer> costMap = new HashMap<Vertex, Integer>();
+		Map<Vertex, Path> pathMap = new HashMap<Vertex, Path>();
+
+		for(Vertex v : vertexes) {
+			unknown.add(v);
+			costMap.put(v, Integer.MAX_VALUE);
+			pathMap.put(v, new Path(new ArrayList<Vertex>(), -1));
+		}
+		
 		Vertex source = unknown.get(vertexes.indexOf(a));
 		Vertex chosenVertex = source;
-		source.cost = 0;
+		costMap.put(source, 0);
 		int min;
-
 		
 		while(!unknown.isEmpty()) {
 			min = Integer.MAX_VALUE;
-			System.out.println(unknown);
 			for(Vertex vs : unknown) {
-				if(vs.cost < min) {
-					min = vs.cost;
+				if(costMap.get(vs) < min) {
+					min = costMap.get(vs);
 					chosenVertex = vs;
-					vs.known = true;
 				}
 			}
+			System.out.println("cost map : " + costMap);
+			System.out.println("edge map : " + eMap);
+			System.out.println(unknown);
 			System.out.println(chosenVertex);
 			
 			for(Edge e : eMap.get(chosenVertex)) {
-				Vertex curr = unknown.get(unknown.indexOf(e.getDestination()));
-				if(!curr.known) 
-				{
-					int prev = Math.abs(curr.cost + e.getWeight());
+				if(unknown.contains(e.getDestination())) {
+				
+					Vertex curr = unknown.get(unknown.indexOf(e.getDestination()));
+					
+					int prev = Math.abs(costMap.get(curr) + e.getWeight());
 					int newWeight = e.getWeight();
 					if(newWeight < prev) {
-						curr.cost = newWeight;
-						System.out.println(curr.cost);
-						curr.path.vertices.add(chosenVertex);
+						costMap.put(curr, newWeight);
+						pathMap.get(curr).vertices.clear();
+						pathMap.get(curr).vertices.add(chosenVertex);
 					}
 				}
 				
-			}		
-			
+			}
 			unknown.remove(chosenVertex);
-		}
-		
-		
+		}		
+
 		
 		return null;
 

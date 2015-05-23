@@ -147,6 +147,11 @@ public class MyGraph implements Graph {
 	 */
 	
 	public Path shortestPath(Vertex a, Vertex b) {
+		if(a.equals(b)) {
+			Path temp = new Path(new LinkedList<Vertex>(), 0);
+			temp.vertices.add(a);
+			return temp;
+		}
 		List<Vertex> unknown = new LinkedList<Vertex>();
 		Map<Vertex, Integer> costMap = new HashMap<Vertex, Integer>();
 		Map<Vertex, Path> pathMap = new HashMap<Vertex, Path>();
@@ -155,35 +160,32 @@ public class MyGraph implements Graph {
 			unknown.add(v);
 			costMap.put(v, Integer.MAX_VALUE);
 			pathMap.put(v, new Path(new ArrayList<Vertex>(), -1));
+			
 		}
 		
 		Vertex source = unknown.get(vertexes.indexOf(a));
 		Vertex chosenVertex = source;
 		costMap.put(source, 0);
 		int min;
+		boolean noPath = true; 
 		
 		while(!unknown.isEmpty()) {
 			min = Integer.MAX_VALUE;
 			for(Vertex vs : unknown) {
-				if(costMap.get(vs) < min) {
+				if(costMap.get(vs) <= min) {
 					min = costMap.get(vs);
 					chosenVertex = vs;
 				}
 			}
-//			System.out.println("cost map : " + costMap);
-//			System.out.println("edge map : " + eMap);
-//			System.out.println(unknown);
-//			System.out.println(chosenVertex);
-			
+	
 			for(Edge e : eMap.get(chosenVertex)) {
 				if(unknown.contains(e.getDestination())) {
-				
+					noPath = false;
 					Vertex curr = unknown.get(unknown.indexOf(e.getDestination()));
-					System.out.println(costMap.get(curr));
-					int prev = Math.abs(costMap.get(curr) + e.getWeight());
-					int newWeight = e.getWeight();
-					System.out.println(Math.abs(prev));
-					System.out.println(newWeight);
+					int prev = costMap.get(curr);
+					prev = Math.abs(prev + 1) - 1;
+					int newWeight = costMap.get(chosenVertex) + (e.getWeight());
+					newWeight = Math.abs(newWeight + 1) - 1;
 					if(newWeight < prev) {
 						costMap.put(curr, newWeight);
 						pathMap.get(curr).vertices.clear();
@@ -192,13 +194,20 @@ public class MyGraph implements Graph {
 				}
 				
 			}
+			if(chosenVertex.equals(source) && noPath) {
+				return null;
+			}
 			unknown.remove(chosenVertex);
 		}		
 		
 		Path shortPath = new Path(new LinkedList<Vertex>(), costMap.get(b));
 		boolean done = false; 
+		
+		if(pathMap.get(b).vertices.isEmpty()) {
+			return null; 
+		}
 		Vertex temp = pathMap.get(b).vertices.get(0);
-
+		shortPath.vertices.add(b);
 		
 		while(!done) {
 			shortPath.vertices.add(temp);
@@ -208,11 +217,6 @@ public class MyGraph implements Graph {
 				temp = pathMap.get(temp).vertices.get(0);
 			}
 		}
-	
 		return shortPath;
-
 	}
-	
-
-
 }

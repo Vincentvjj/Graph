@@ -39,7 +39,15 @@ public class FindPaths {
 			// YOUR CODE HERE: call shortestPath and print
 			// out the result
 			
-			System.out.println(g.shortestPath(a, b).vertices);
+			Path result = g.shortestPath(a, b);
+			String output = "";
+			
+			for(int i = result.vertices.size() - 1; i >= 0; i--) {
+				output += result.vertices.get(i) + " ";
+			}
+			
+			System.out.println(output);
+			System.out.println(result.cost);
 			
 		}
 	}

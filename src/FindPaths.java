@@ -42,12 +42,18 @@ public class FindPaths {
 			Path result = g.shortestPath(a, b);
 			String output = "";
 			
-			for(int i = result.vertices.size() - 1; i >= 0; i--) {
-				output += result.vertices.get(i) + " ";
+			if(result == null) {
+				System.out.println("does not exist");
+				
+			} else {
+				
+				for(int i = result.vertices.size() - 1; i >= 0; i--) {
+					output += result.vertices.get(i) + " ";
+				}
+				
+				System.out.println(output);
+				System.out.println(result.cost);
 			}
-			
-			System.out.println(output);
-			System.out.println(result.cost);
 			
 		}
 	}
